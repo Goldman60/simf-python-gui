@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="simf-py-gui",
+    name="simf-python-gui",
     version="0.0.1",
     author="A.J. Fite, Sara Kipps",
     author_email="me@ajfite.com, skipps@calpoly.edu",
