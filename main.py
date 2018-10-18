@@ -14,10 +14,10 @@ class MainWindow:
 
     def initui(self):
         app = QtWidgets.QApplication(sys.argv)
-        MainWindow = QtWidgets.QMainWindow()
+        mainwindow = QtWidgets.QMainWindow()
         ui = Ui_MainWindow()
-        ui.setupUi(MainWindow)
-        MainWindow.show()
+        ui.setupUi(mainwindow)
+        mainwindow.show()
         sys.exit(app.exec_())
 
 
