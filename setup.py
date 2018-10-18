@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import setuptools
 
 with open("README.md", "r") as fh:
@@ -13,6 +15,10 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://git.nclf.net/SIMF/simf-python-gui",
     packages=setuptools.find_packages(),
+    package_data={'simf-python-gui': ['MainWindow.ui']},
+    data_files=[('', ['LICENSE.md'])],
+    install_requires=['PyQt5'],
+    license="MIT",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
