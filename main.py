@@ -1,23 +1,24 @@
 #!/usr/bin/python3
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
+
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import *
+from MainWindow import Ui_MainWindow
 
 
-class MainWindow(QWidget):
+class MainWindow:
     def __init__(self):
         super().__init__()
-        self.initUI()
+        self.initui()
 
-    def initUI(self):
-        btn = QPushButton('button', self)
-        btn.setToolTip('I am a button!')
-        btn.resize(btn.sizeHint())
-        btn.move(50, 50)
-
-        self.setGeometry(400, 400, 400, 200)
-        self.setWindowTitle('SIMF GUI')
-        self.show()
+    def initui(self):
+        app = QtWidgets.QApplication(sys.argv)
+        MainWindow = QtWidgets.QMainWindow()
+        ui = Ui_MainWindow()
+        ui.setupUi(MainWindow)
+        MainWindow.show()
+        sys.exit(app.exec_())
 
 
 if __name__ == '__main__':
