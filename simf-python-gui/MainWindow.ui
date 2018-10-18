@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>AJ Fite and Sara Kipps</author>
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>783</width>
-    <height>721</height>
+    <width>723</width>
+    <height>747</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Solar Irradiance Microforecasting Control Panel</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="h">
+    <normaloff>.</normaloff>.</iconset>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="5" column="1">
-     <widget class="QProgressBar" name="progressBar">
-      <property name="value">
-       <number>24</number>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="0">
-     <widget class="QPushButton" name="stopCaptureButton">
+    <item row="7" column="0">
+     <widget class="QPushButton" name="stopCapButton">
       <property name="text">
        <string>Stop Capture</string>
       </property>
      </widget>
     </item>
-    <item row="8" column="1">
+    <item row="7" column="1">
      <widget class="QPushButton" name="startCapButton">
       <property name="text">
        <string>Start Capture</string>
@@ -46,7 +47,7 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="0" colspan="4">
+    <item row="6" column="0" colspan="4">
      <widget class="QListWidget" name="consoleWidget"/>
     </item>
     <item row="0" column="0" colspan="2">
@@ -60,19 +61,6 @@
        <string>Solar Irradiance Microforecasting Control Panel</string>
       </property>
      </widget>
-    </item>
-    <item row="5" column="0">
-     <spacer name="horizontalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
     </item>
     <item row="1" column="0" colspan="4">
      <layout class="QGridLayout" name="gridLayout">
@@ -103,20 +91,14 @@
       <item row="2" column="2">
        <widget class="QGraphicsView" name="graphicsView_9"/>
       </item>
+      <item row="4" column="1">
+       <widget class="QProgressBar" name="progressBar">
+        <property name="value">
+         <number>24</number>
+        </property>
+       </widget>
+      </item>
      </layout>
-    </item>
-    <item row="5" column="3">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
     </item>
     <item row="0" column="2">
      <spacer name="horizontalSpacer_3">
@@ -141,7 +123,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>783</width>
+     <width>723</width>
      <height>30</height>
     </rect>
    </property>

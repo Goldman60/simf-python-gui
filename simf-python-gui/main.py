@@ -2,23 +2,23 @@
 
 import sys
 
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import *
-from MainWindow import Ui_MainWindow
+from PyQt5 import uic
+from PyQt5.QtWidgets import QMainWindow, QApplication
 
 
-class MainWindow:
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.initui()
+        uic.loadUi('MainWindow.ui', self)
+        self.show()
+        self.startCapButton.clicked.connect(self.start_capture)
+        self.stopCapButton.clicked.connect(self.stop_capture)
 
-    def initui(self):
-        app = QtWidgets.QApplication(sys.argv)
-        mainwindow = QtWidgets.QMainWindow()
-        ui = Ui_MainWindow()
-        ui.setupUi(mainwindow)
-        mainwindow.show()
-        sys.exit(app.exec_())
+    def start_capture(self):
+        print('Start capture')
+
+    def stop_capture(self):
+        print('Stop capture')
 
 
 if __name__ == '__main__':
