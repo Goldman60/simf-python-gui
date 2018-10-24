@@ -39,7 +39,9 @@ class MainWindow(QMainWindow):
 
     def start_capture(self):
         print('Start capture')
-        self.simfProcess.start("sudo python3 frame_grabber.py --dbg_interval 10 --dbg_png --dbg_ffc_interval -180 --dbg_capture_count 720 --dbg_serial_csv 1")  # TODO: Make configurable
+        #  TODO: get sudo password and feed it to sudo
+        # self.simfProcess.start("sudo python3 frame_grabber.py --dbg_interval 10 --dbg_png --dbg_ffc_interval -180 --dbg_capture_count 720 --dbg_serial_csv 1")  # TODO: Make configurable
+        self.simfProcess.start("ls")
 
     def stop_capture(self):
         print('Stop capture')
