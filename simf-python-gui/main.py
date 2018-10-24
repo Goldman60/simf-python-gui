@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 import sys
-
+from configparser import ConfigParser
 from PyQt5 import uic
 from PyQt5.QtCore import QProcess
 from PyQt5.QtWidgets import QMainWindow, QApplication
-
-#TODO: https://stackoverflow.com/questions/22069321/realtime-output-from-a-subprogram-to-stdout-of-a-pyqt-widget
 
 
 class MainWindow(QMainWindow):
@@ -41,14 +39,26 @@ class MainWindow(QMainWindow):
 
     def start_capture(self):
         print('Start capture')
-        self.simfProcess.start("ls")
+        self.simfProcess.start("sudo python3 frame_grabber.py --dbg_interval 10 --dbg_png --dbg_ffc_interval -180 --dbg_capture_count 720 --dbg_serial_csv 1")  # TODO: Make configurable
 
     def stop_capture(self):
         print('Stop capture')
 
 
+# TODO: Implement config file
+class Config:
+    def __init__(self):
+        self.config = ConfigParser()
+
+        if self.config.read('config.ini'):
+            print('old config')
+        else:
+            print('new config')
+
+
 # Main Function
 if __name__ == '__main__':
+    config = Config()
     app = QApplication(sys.argv)
     mainWindow = MainWindow()
     sys.exit(app.exec_())

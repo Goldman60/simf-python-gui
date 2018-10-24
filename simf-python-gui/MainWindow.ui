@@ -39,6 +39,9 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="8" column="0">
        <widget class="QPushButton" name="stopCapButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Stop Capture</string>
         </property>
