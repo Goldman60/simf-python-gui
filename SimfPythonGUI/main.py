@@ -6,9 +6,9 @@ from PyQt5 import uic
 from PyQt5.QtCore import QProcess, QProcessEnvironment, Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from watchdog.observers import Observer
-import filehandlers, sudo
-from about import AboutDialog
-from config import Config, ConfigEditor
+import SimfPythonGUI.filehandlers as filehandlers, SimfPythonGUI.sudo as sudo
+from SimfPythonGUI.about import AboutDialog
+from SimfPythonGUI.config import Config, ConfigEditor
 
 
 class MainWindow(QMainWindow):
