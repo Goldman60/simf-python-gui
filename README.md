@@ -4,7 +4,8 @@ A QT and Python3 based graphical control panel for the Lepton-Grabber
 
 ## Installation
 
-Run the setup.py file 
+Checkout the lepton-grabber code and run through its install process then run 
+the setup.py file
 
 ## Dependencies
 
