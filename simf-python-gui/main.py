@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 import os
 import sys
+import webbrowser
 from PyQt5 import uic
 from PyQt5.QtCore import QProcess, QProcessEnvironment, Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from watchdog.observers import Observer
 import filehandlers, sudo
-from config import Config
+from about import AboutDialog
+from config import Config, ConfigEditor
 
 
 class MainWindow(QMainWindow):
@@ -19,15 +21,46 @@ class MainWindow(QMainWindow):
         self.show()
 
         self.passprompt = None
+        self.configdialog = None
+        self.aboutdialog = None
 
         # Register Events
         self.startCapButton.clicked.connect(self.start_capture)
         self.stopCapButton.clicked.connect(self.stop_capture)
+        self.actionSourceCode.triggered.connect(
+            lambda:
+            MainWindow.open_link("https://git.nclf.net/SIMF/simf-python-gui")
+        )
+        self.actionLicense.triggered.connect(
+            lambda:
+            MainWindow.open_link("https://git.nclf.net/SIMF/simf-python-gui/"
+                                 "blob/master/LICENSE.md")
+        )
+        self.actionExit.triggered.connect(self.close)
+        self.actionSettings.triggered.connect(self.show_settings)
+        self.actionAbout.triggered.connect(self.show_about)
 
         # Process setup
         self.simfProcess.readyRead.connect(self.console_write)
         self.simfProcess.started.connect(self.process_started)
         self.simfProcess.finished.connect(self.process_finished)
+
+    # Opens a link
+    @staticmethod
+    def open_link(link):
+        webbrowser.open(link)
+
+    # Triggered when window closes, I know it isn't PEP8 compliant but thats
+    # the way pyqt5 is
+    def closeEvent(self, QCloseEvent):
+        self.simfProcess.kill()
+        self.close()
+
+    def show_about(self):
+        self.aboutdialog = AboutDialog()
+
+    def show_settings(self):
+        self.configdialog = ConfigEditor()
 
     def process_started(self):
         self.startCapButton.setDisabled(True)

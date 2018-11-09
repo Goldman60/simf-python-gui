@@ -152,14 +152,14 @@
     <property name="title">
      <string>Fi&amp;le</string>
     </property>
-    <addaction name="actionCapture_Settings"/>
+    <addaction name="actionSettings"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>Abo&amp;ut</string>
     </property>
-    <addaction name="actionSource_Code"/>
+    <addaction name="actionSourceCode"/>
     <addaction name="actionLicense"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -167,9 +167,15 @@
    <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionCapture_Settings">
+  <action name="actionSettings">
    <property name="text">
     <string>&amp;Capture Settings</string>
+   </property>
+   <property name="iconText">
+    <string>Settings</string>
+   </property>
+   <property name="toolTip">
+    <string>Settings</string>
    </property>
   </action>
   <action name="actionExit">
@@ -177,7 +183,7 @@
     <string>&amp;Exit</string>
    </property>
   </action>
-  <action name="actionSource_Code">
+  <action name="actionSourceCode">
    <property name="text">
     <string>&amp;Source Code</string>
    </property>
