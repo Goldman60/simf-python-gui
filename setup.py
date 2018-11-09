@@ -17,7 +17,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     package_data={'simf-python-gui': ['*.ui']},
     data_files=[('', ['LICENSE.md'])],
-    install_requires=['PyQt5'],
+    install_requires=['PyQt5', 'watchdog'],
     license="MIT",
     classifiers=[
         "Programming Language :: Python :: 3",
