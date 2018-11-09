@@ -3,7 +3,7 @@ import os
 import sys
 from configparser import ConfigParser
 from PyQt5 import uic
-from PyQt5.QtCore import QProcess, QProcessEnvironment
+from PyQt5.QtCore import QProcess, QProcessEnvironment, Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from watchdog.observers import Observer
 import filehandlers
@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
     observer = Observer()
 
     def __init__(self):
-        super().__init__()
+        super().__init__(flags=Qt.Window)
         uic.loadUi('MainWindow.ui', self)
         self.show()
 
@@ -39,7 +39,7 @@ class MainWindow(QMainWindow):
             self.observer.start()
 
         datadir = filehandlers.FileHandlerUtils.compute_current_data_dir()
-        if not os.path.exists(datadir): # Wait for lepton-grabber to make the directory
+        if not os.path.exists(datadir):  # Wait for lepton-grabber to make the directory
             # Rather than failing here or waiting for the data directory to be created
             # Just create it ourselves
             os.mkdir(datadir)
@@ -86,7 +86,7 @@ class MainWindow(QMainWindow):
         # Note this is a kinda hacky way to get the script to execute
         # with sudo permissions, likely a better way to do this at the system level
         self.simfProcess.start("bash")  # TODO: Make configurable
-        self.simfProcess.writeData(("printf -v pw \"%q\\n\" \"" + password +"\"\n").encode('utf-8'))
+        self.simfProcess.writeData(("printf -v pw \"%q\\n\" \"" + password + "\"\n").encode('utf-8'))
         self.simfProcess.writeData("echo $pw | sudo -S /usr/bin/python3 frame_grabber.py  --dbg_interval 10 --dbg_png "
                                    "--dbg_ffc_interval -180 --dbg_capture_count 720 --dbg_serial_csv 1\n"
                                    .encode('utf-8'))
