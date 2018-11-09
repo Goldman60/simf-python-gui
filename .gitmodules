@@ -1,0 +1,3 @@
+[submodule "SimfPythonGUI/lepton-grabber"]
+	path = SimfPythonGUI/lepton-grabber
+	url = git@gitlab.com:peeyush_sharma/lepton-grabber.git
