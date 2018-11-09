@@ -6,7 +6,6 @@ from datetime import date
 class FileHandlerUtils:
     @staticmethod
     def compute_current_data_dir():
-        # TODO: Implement
         today = date.today()
 
         return "lepton-grabber/" + today.strftime("%y-%m-%d")
@@ -14,10 +13,22 @@ class FileHandlerUtils:
 
 class ImageHandler(PatternMatchingEventHandler):
     patterns = ["*.png"]
-    main = 0
+    main = None
+
+    # Holders for the images
+    pngN = None
+    pngNE = None
+    pngE = None
+    pngSE = None
+    pngS = None
+    pngSW = None
+    pngW = None
+    pngNW = None
+    pngCenter = None
 
     def __init__(self, mainwindow):
         self.main = mainwindow
 
     def on_created(self, event):
-        main.update_images()
+        # TODO: Update image views
+        print("Update image")

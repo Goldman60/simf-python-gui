@@ -14,7 +14,6 @@ from config import Config, ConfigEditor
 class MainWindow(QMainWindow):
     simfProcess = QProcess()
     observer = Observer()
-    periodic = None  # thread pointer for the status bar
 
     def __init__(self):
         super().__init__(flags=Qt.Window)
