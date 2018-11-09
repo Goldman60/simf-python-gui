@@ -16,6 +16,9 @@ setuptools.setup(
     url="https://git.nclf.net/SIMF/simf-python-gui",
     packages=setuptools.find_packages(),
     package_data={'simf-python-gui': ['*.ui']},
+    entry_points={
+        'gui_scripts': ['simf-gui=simf-python-gui.main:main'],
+    },
     data_files=[('', ['LICENSE.md'])],
     install_requires=['PyQt5', 'watchdog'],
     license="MIT",
