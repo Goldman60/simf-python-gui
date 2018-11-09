@@ -178,8 +178,12 @@ class MainWindow(QMainWindow):
 
 
 # Main Function for the whole thing
-if __name__ == '__main__':
+def main():
     config = Config()
     app = QApplication(sys.argv)
-    mainWindow = MainWindow()
+    mainwindow = MainWindow()
     sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()
