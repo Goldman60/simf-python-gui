@@ -39,9 +39,11 @@ class MainWindow(QMainWindow):
             self.observer.start()
 
         datadir = filehandlers.FileHandlerUtils.compute_current_data_dir()
-        if not os.path.exists(datadir):  # Wait for lepton-grabber to make the directory
-            # Rather than failing here or waiting for the data directory to be created
-            # Just create it ourselves
+
+        if not os.path.exists(datadir):
+            # Wait for lepton-grabber to make the directory rather than failing
+            # here or waiting for the data directory to be created just create
+            # it ourselves
             os.mkdir(datadir)
         self.observer.schedule(filehandlers.ImageHandler(self), path=datadir)
 
@@ -61,8 +63,10 @@ class MainWindow(QMainWindow):
 
     # Allows the console to handle \n newlines
     def console_write_line(self, output):
-        output = output.replace('\\n', '<br />')  # the QPlainTextEdit widget doesn't like newlines
-        self.consoleWidget.appendHtml(output)  # So I use appendhtml and <br /> instead
+        # the QPlainTextEdit widget doesn't like newlines
+        # So I use appendhtml and <br /> instead
+        output = output.replace('\\n', '<br />')
+        self.consoleWidget.appendHtml(output)
 
     # Event handle fired when there is new stdout or stderr from SIMF
     def console_write(self):
@@ -84,11 +88,18 @@ class MainWindow(QMainWindow):
         self.simfProcess.setWorkingDirectory("lepton-grabber")
         self.simfProcess.setProcessChannelMode(QProcess.MergedChannels)
         # Note this is a kinda hacky way to get the script to execute
-        # with sudo permissions, likely a better way to do this at the system level
+        # with sudo permissions, likely a better way to do this at the system
+        # level
         self.simfProcess.start("bash")  # TODO: Make configurable
-        self.simfProcess.writeData(("printf -v pw \"%q\\n\" \"" + password + "\"\n").encode('utf-8'))
-        self.simfProcess.writeData("echo $pw | sudo -S /usr/bin/python3 frame_grabber.py  --dbg_interval 10 --dbg_png "
-                                   "--dbg_ffc_interval -180 --dbg_capture_count 720 --dbg_serial_csv 1\n"
+        self.simfProcess.writeData(("printf -v pw \"%q\\n\" \""
+                                    + password + "\"\n").encode('utf-8'))
+        self.simfProcess.writeData("echo $pw | sudo -S /usr/bin/python3 "
+                                   "frame_grabber.py  "
+                                   "--dbg_interval 10 "
+                                   "--dbg_png "
+                                   "--dbg_ffc_interval -180 "
+                                   "--dbg_capture_count 720 "
+                                   "--dbg_serial_csv 1\n"
                                    .encode('utf-8'))
         self.simfProcess.writeData("exit\n".encode('utf-8'))
 
