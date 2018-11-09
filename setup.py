@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="simf-python-gui",
-    version="0.0.1",
+    version="0.0.2",
     author="A.J. Fite, Sara Kipps",
     author_email="me@ajfite.com, skipps@calpoly.edu",
     description="A GUI controller for the closed source SIMF camera capture utility",
