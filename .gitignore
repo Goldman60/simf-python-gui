@@ -182,5 +182,5 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
-# this is generated on first start
-simf-python-gui/config.ini
+# this is generated on first run
+SimfPythonGUI/config.ini
