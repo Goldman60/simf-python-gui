@@ -1,12 +1,12 @@
 import os
 from configparser import SafeConfigParser
-
-
-# TODO: Comment generated config file
+from PyQt5 import uic
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
 
 
 class Config:
+    # TODO: Comment generated config file
     config_name = 'config.ini'
 
     """  READ ME BEFORE EDITING BELOW
@@ -55,26 +55,28 @@ class Config:
         self.dbg_serial_csv = parser.getboolean('LeptonGrabberLaunchOptions',
                                                 'dbg_serial_csv')
 
-    def write_config(self, parser):
+    @staticmethod
+    def write_config(parser):
         parser.add_section('Paths')
         parser.set('Paths', 'lepton_grabber_working_dir',
-                   self.lepton_grabber_working_dir)
-        parser.set('Paths', 'python_path', self.python_path)
-        parser.set('Paths', 'sudo_path', self.sudo_path)
-        parser.set('Paths', 'bash_path', self.bash_path)
+                   Config.lepton_grabber_working_dir)
+        parser.set('Paths', 'python_path', Config.python_path)
+        parser.set('Paths', 'sudo_path', Config.sudo_path)
+        parser.set('Paths', 'bash_path', Config.bash_path)
 
         parser.add_section('LeptonGrabberLaunchOptions')
         parser.set('LeptonGrabberLaunchOptions', 'dbg_interval',
-                   str(self.dbg_interval))
-        parser.set('LeptonGrabberLaunchOptions', 'dbg_png', str(self.dbg_png))
+                   str(Config.dbg_interval))
+        parser.set('LeptonGrabberLaunchOptions', 'dbg_png',
+                   str(Config.dbg_png))
         parser.set('LeptonGrabberLaunchOptions', 'dbg_ffc_interval',
-                   str(self.dbg_ffc_interval))
+                   str(Config.dbg_ffc_interval))
         parser.set('LeptonGrabberLaunchOptions', 'dbg_capture_count',
-                   str(self.dbg_capture_count))
+                   str(Config.dbg_capture_count))
         parser.set('LeptonGrabberLaunchOptions', 'dbg_serial_csv',
-                   str(self.dbg_serial_csv))
+                   str(Config.dbg_serial_csv))
 
-        with open(self.config_name, 'w') as file:
+        with open(Config.config_name, 'w') as file:
             parser.write(file)
 
     def __init__(self):
@@ -86,5 +88,9 @@ class Config:
             # Generate new config
             self.write_config(parser)
 
-class ConfigEditor(QDialog):
 
+class ConfigEditor(QDialog):
+    def __init__(self):
+        super().__init__(flags=Qt.WindowStaysOnTopHint)
+        uic.loadUi('SettingsDialog.ui', self)
+        self.show()
