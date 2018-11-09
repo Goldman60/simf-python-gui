@@ -1,6 +1,6 @@
 # Solar Irradiance Microforecasting Control Panel
 
-More info to come
+A QT and Python3 based graphical control panel for the Lepton-Grabber
 
 ## Installation
 
@@ -9,4 +9,5 @@ Run the setup.py file
 ## Dependencies
 
 * Python3
-* PyQT
+* PyQT5
+* watchdog
