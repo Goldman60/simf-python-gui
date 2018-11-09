@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 import os
 import sys
-import time
 from configparser import ConfigParser
 from PyQt5 import uic
 from PyQt5.QtCore import QProcess, QProcessEnvironment
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from watchdog.observers import Observer
-from filehandlers import ImageHandler, FileHandlerUtils
+import filehandlers
 import sudo
+
 
 class MainWindow(QMainWindow):
     simfProcess = QProcess()
@@ -38,12 +38,12 @@ class MainWindow(QMainWindow):
         if not self.observer.is_alive():
             self.observer.start()
 
-        datadir = FileHandlerUtils.compute_current_data_dir()
+        datadir = filehandlers.FileHandlerUtils.compute_current_data_dir()
         if not os.path.exists(datadir): # Wait for lepton-grabber to make the directory
             # Rather than failing here or waiting for the data directory to be created
             # Just create it ourselves
             os.mkdir(datadir)
-        self.observer.schedule(ImageHandler(self), path=datadir)
+        self.observer.schedule(filehandlers.ImageHandler(self), path=datadir)
 
     def process_finished(self):
         self.startCapButton.setEnabled(True)
@@ -87,13 +87,16 @@ class MainWindow(QMainWindow):
         # with sudo permissions, likely a better way to do this at the system level
         self.simfProcess.start("bash")  # TODO: Make configurable
         self.simfProcess.writeData(("printf -v pw \"%q\\n\" \"" + password +"\"\n").encode('utf-8'))
-        self.simfProcess.writeData(("echo $pw | sudo -S /usr/bin/python3 frame_grabber.py  --dbg_interval 10 --dbg_png --dbg_ffc_interval -180 --dbg_capture_count 720 --dbg_serial_csv 1\n").encode('utf-8'))
+        self.simfProcess.writeData("echo $pw | sudo -S /usr/bin/python3 frame_grabber.py  --dbg_interval 10 --dbg_png "
+                                   "--dbg_ffc_interval -180 --dbg_capture_count 720 --dbg_serial_csv 1\n"
+                                   .encode('utf-8'))
         self.simfProcess.writeData("exit\n".encode('utf-8'))
 
     # Fired when the stop capture button is hit
     def stop_capture(self):
         self.console_write_line("Capture terminated!")
         self.simfProcess.kill()  # Kill the capture subprocess
+
 
 # TODO: Implement config file
 class Config:
@@ -104,6 +107,7 @@ class Config:
             print('old config')
         else:
             print('new config')
+
 
 # Main Function
 if __name__ == '__main__':
