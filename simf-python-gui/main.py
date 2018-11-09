@@ -8,6 +8,7 @@ from PyQt5.QtCore import QProcess, QProcessEnvironment
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from watchdog.observers import Observer
 from filehandlers import ImageHandler, FileHandlerUtils
+import sudo
 
 class MainWindow(QMainWindow):
     simfProcess = QProcess()
@@ -17,6 +18,8 @@ class MainWindow(QMainWindow):
         super().__init__()
         uic.loadUi('MainWindow.ui', self)
         self.show()
+
+        self.passprompt = None
 
         # Register Events
         self.startCapButton.clicked.connect(self.start_capture)
@@ -36,9 +39,10 @@ class MainWindow(QMainWindow):
             self.observer.start()
 
         datadir = FileHandlerUtils.compute_current_data_dir()
-        while not os.path.exists(datadir): # Wait for lepton-grabber to make the directory
-            print("Waiting for data dir")
-            time.sleep(3)
+        if not os.path.exists(datadir): # Wait for lepton-grabber to make the directory
+            # Rather than failing here or waiting for the data directory to be created
+            # Just create it ourselves
+            os.mkdir(datadir)
         self.observer.schedule(ImageHandler(self), path=datadir)
 
     def process_finished(self):
@@ -66,19 +70,24 @@ class MainWindow(QMainWindow):
         output = str(self.simfProcess.readAll(), encoding='utf-8')
         self.console_write_line(output)
 
-    # Fired when the start capture button is hit
+    # Fired by the OK button on the sudo dialog
     def start_capture(self):
-        print('Start capture')
-        #  TODO: get sudo password and feed it to sudo
+        # Retrieves the password via a QDialog
+        self.passprompt = sudo.PasswordWindow()
+        self.passprompt.exec_()  # Wait for the password dialog to finish
+        if self.passprompt.rejectstat:  # Cancel was pressed
+            return
+        password = self.passprompt.passLine.text()  # Grab the password
+
         env = QProcessEnvironment.systemEnvironment()
-        sudopw = "pw"
         self.simfProcess.setProcessEnvironment(env)
         self.simfProcess.setWorkingDirectory("lepton-grabber")
         self.simfProcess.setProcessChannelMode(QProcess.MergedChannels)
         # Note this is a kinda hacky way to get the script to execute
         # with sudo permissions, likely a better way to do this at the system level
         self.simfProcess.start("bash")  # TODO: Make configurable
-        self.simfProcess.writeData(("echo " + sudopw + "| sudo -S /usr/bin/python3 frame_grabber.py  --dbg_interval 10 --dbg_png --dbg_ffc_interval -180 --dbg_capture_count 720 --dbg_serial_csv 1\n").encode('utf-8'))
+        self.simfProcess.writeData(("printf -v pw \"%q\\n\" \"" + password +"\"\n").encode('utf-8'))
+        self.simfProcess.writeData(("echo $pw | sudo -S /usr/bin/python3 frame_grabber.py  --dbg_interval 10 --dbg_png --dbg_ffc_interval -180 --dbg_capture_count 720 --dbg_serial_csv 1\n").encode('utf-8'))
         self.simfProcess.writeData("exit\n".encode('utf-8'))
 
     # Fired when the stop capture button is hit
