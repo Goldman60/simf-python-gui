@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 import os
 import sys
-from configparser import ConfigParser
 from PyQt5 import uic
 from PyQt5.QtCore import QProcess, QProcessEnvironment, Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from watchdog.observers import Observer
-import filehandlers
-import sudo
+import filehandlers, sudo
+from config import Config
 
 
 class MainWindow(QMainWindow):
@@ -85,39 +84,36 @@ class MainWindow(QMainWindow):
 
         env = QProcessEnvironment.systemEnvironment()
         self.simfProcess.setProcessEnvironment(env)
-        self.simfProcess.setWorkingDirectory("lepton-grabber")
+        self.simfProcess.setWorkingDirectory(Config.lepton_grabber_working_dir)
         self.simfProcess.setProcessChannelMode(QProcess.MergedChannels)
         # Note this is a kinda hacky way to get the script to execute
         # with sudo permissions, likely a better way to do this at the system
         # level
-        self.simfProcess.start("bash")  # TODO: Make configurable
+        # TODO: Could expand configurability
+        self.simfProcess.start(Config.bash_path)
         self.simfProcess.writeData(("printf -v pw \"%q\\n\" \""
                                     + password + "\"\n").encode('utf-8'))
-        self.simfProcess.writeData("echo $pw | sudo -S /usr/bin/python3 "
-                                   "frame_grabber.py  "
-                                   "--dbg_interval 10 "
-                                   "--dbg_png "
-                                   "--dbg_ffc_interval -180 "
-                                   "--dbg_capture_count 720 "
-                                   "--dbg_serial_csv 1\n"
+        self.simfProcess.writeData(("echo $pw | " + Config.sudo_path + " -S "
+                                    + Config.python_path +
+                                    " frame_grabber.py"
+                                    " --dbg_interval "
+                                    + str(Config.dbg_interval) + ""
+                                    + (" --dbg_png" if Config.dbg_png
+                                       else "") +
+                                    " --dbg_ffc_interval "
+                                    + str(Config.dbg_ffc_interval) +
+                                    " --dbg_capture_count "
+                                    + str(Config.dbg_capture_count) +
+                                    " --dbg_serial_csv "
+                                    + str(int(Config.dbg_serial_csv)) + "\n")
                                    .encode('utf-8'))
+
         self.simfProcess.writeData("exit\n".encode('utf-8'))
 
     # Fired when the stop capture button is hit
     def stop_capture(self):
         self.console_write_line("Capture terminated!")
         self.simfProcess.kill()  # Kill the capture subprocess
-
-
-# TODO: Implement config file
-class Config:
-    def __init__(self):
-        self.config = ConfigParser()
-
-        if self.config.read('config.ini'):
-            print('old config')
-        else:
-            print('new config')
 
 
 # Main Function

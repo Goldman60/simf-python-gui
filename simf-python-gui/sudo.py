@@ -9,8 +9,7 @@ class PasswordWindow(QDialog):
 
     def __init__(self):
         super().__init__(flags=Qt.WindowStaysOnTopHint)
-        uic.loadUi('PasswordWindow.ui', self)
-        print("Load password")
+        uic.loadUi('PasswordDialog.ui', self)
         self.show()
 
         self.rejected.connect(self.pass_reject)
