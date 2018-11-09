@@ -1,6 +1,7 @@
 from watchdog.events import PatternMatchingEventHandler
 from datetime import date
 
+
 # Computes where the lepton grabber is currently dumping output
 class FileHandlerUtils:
     @staticmethod

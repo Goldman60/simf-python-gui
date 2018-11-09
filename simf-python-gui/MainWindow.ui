@@ -48,34 +48,73 @@
        </widget>
       </item>
       <item row="3" column="2">
-       <widget class="QGraphicsView" name="graphicsView_7"/>
+       <widget class="QGraphicsView" name="imgSE">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QGraphicsView" name="graphicsView_5"/>
+       <widget class="QGraphicsView" name="imgN">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QGraphicsView" name="graphicsView_8"/>
+       <widget class="QGraphicsView" name="imgS">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QGraphicsView" name="graphicsView_4"/>
+       <widget class="QGraphicsView" name="imgCenter">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QGraphicsView" name="graphicsView_2"/>
+       <widget class="QGraphicsView" name="imgW">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QGraphicsView" name="graphicsView_6"/>
+       <widget class="QGraphicsView" name="imgNE">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QGraphicsView" name="graphicsView_3"/>
+       <widget class="QGraphicsView" name="imgSW">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QGraphicsView" name="graphicsView"/>
+       <widget class="QGraphicsView" name="imgNW">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item row="2" column="2">
-       <widget class="QGraphicsView" name="graphicsView_9"/>
+       <widget class="QGraphicsView" name="imgE">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item row="6" column="1">
-       <widget class="QProgressBar" name="progressBar">
+       <widget class="QProgressBar" name="capProgress">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="value">
          <number>0</number>
         </property>
@@ -83,11 +122,20 @@
       </item>
       <item row="6" column="2">
        <widget class="QLCDNumber" name="solarIrradiance">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="minimumSize">
          <size>
           <width>70</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="smallDecimalPoint">
+         <bool>false</bool>
+        </property>
+        <property name="segmentStyle">
+         <enum>QLCDNumber::Filled</enum>
         </property>
        </widget>
       </item>
@@ -112,28 +160,60 @@
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="capProgressLabel">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Capture Progress</string>
         </property>
        </widget>
       </item>
       <item row="5" column="2">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="solarIrradianceLabel">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Solar Irradiance</string>
         </property>
        </widget>
       </item>
       <item row="5" column="0">
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="cameraCountLabel">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Camera Count</string>
         </property>
        </widget>
       </item>
       <item row="6" column="0">
-       <widget class="QLCDNumber" name="cameraCount"/>
+       <widget class="QLCDNumber" name="cameraCount">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2">
+       <widget class="QLabel" name="statusLabel">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Status: Stopped</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

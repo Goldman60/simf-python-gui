@@ -14,11 +14,11 @@ from config import Config, ConfigEditor
 class MainWindow(QMainWindow):
     simfProcess = QProcess()
     observer = Observer()
+    periodic = None  # thread pointer for the status bar
 
     def __init__(self):
         super().__init__(flags=Qt.Window)
         uic.loadUi('MainWindow.ui', self)
-        self.show()
 
         self.passprompt = None
         self.configdialog = None
@@ -45,6 +45,9 @@ class MainWindow(QMainWindow):
         self.simfProcess.started.connect(self.process_started)
         self.simfProcess.finished.connect(self.process_finished)
 
+        # Ready to show the UI!
+        self.show()
+
     # Opens a link
     @staticmethod
     def open_link(link):
@@ -53,7 +56,7 @@ class MainWindow(QMainWindow):
     # Triggered when window closes, I know it isn't PEP8 compliant but thats
     # the way pyqt5 is
     def closeEvent(self, QCloseEvent):
-        self.simfProcess.kill()
+        self.simfProcess.kill()  # Cleanly kill the simfprocess
         self.close()
 
     def show_about(self):
@@ -62,9 +65,33 @@ class MainWindow(QMainWindow):
     def show_settings(self):
         self.configdialog = ConfigEditor()
 
+    # Toggle all the enable/disable options
+    # status=true lepton-grabber process running
+    # status=false lepton-grabber process stopped
+    # sorry
+    def button_toggle(self, status):
+        self.capProgress.setEnabled(status)
+        self.cameraCount.setEnabled(status)
+        self.solarIrradiance.setEnabled(status)
+        self.startCapButton.setDisabled(status)
+        self.stopCapButton.setEnabled(status)
+        self.capProgressLabel.setEnabled(status)
+        self.cameraCountLabel.setEnabled(status)
+        self.solarIrradianceLabel.setEnabled(status)
+        self.imgN.setEnabled(status)
+        self.imgNE.setEnabled(status)
+        self.imgE.setEnabled(status)
+        self.imgSE.setEnabled(status)
+        self.imgS.setEnabled(status)
+        self.imgSW.setEnabled(status)
+        self.imgW.setEnabled(status)
+        self.imgNW.setEnabled(status)
+        self.imgCenter.setEnabled(status)
+
+    # Triggered when the QProcess that runs the lepton-grabber runs
     def process_started(self):
-        self.startCapButton.setDisabled(True)
-        self.stopCapButton.setEnabled(True)
+        self.statusLabel.setText("Status: Capturing")
+        self.button_toggle(True)
 
         # Start the file observers
         if not self.observer.is_alive():
@@ -79,9 +106,12 @@ class MainWindow(QMainWindow):
             os.mkdir(datadir)
         self.observer.schedule(filehandlers.ImageHandler(self), path=datadir)
 
+    # Triggered when the QProcess that runs the lepton-grabber dies for any
+    # reason
     def process_finished(self):
-        self.startCapButton.setEnabled(True)
-        self.stopCapButton.setDisabled(True)
+        self.statusLabel.setText("Status: Stopped")
+        self.button_toggle(False)
+
         self.console_write()
         self.console_write_line("Capture Ended")
 
@@ -102,7 +132,6 @@ class MainWindow(QMainWindow):
 
     # Event handle fired when there is new stdout or stderr from SIMF
     def console_write(self):
-        print('Read input!')
         output = str(self.simfProcess.readAll(), encoding='utf-8')
         self.console_write_line(output)
 
@@ -149,7 +178,7 @@ class MainWindow(QMainWindow):
         self.simfProcess.kill()  # Kill the capture subprocess
 
 
-# Main Function
+# Main Function for the whole thing
 if __name__ == '__main__':
     config = Config()
     app = QApplication(sys.argv)
