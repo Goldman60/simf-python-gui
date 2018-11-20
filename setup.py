@@ -17,7 +17,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     package_data={'SimfPythonGUI': ['*.ui']},
     entry_points={
-        'gui_scripts': ['simfgui = SimfPythonGUI.main:main'],
+        'gui_scripts': ['simfgui = SimfPythonGUI.guientry:main'],
     },
     data_files=[('', ['LICENSE.md'])],
     install_requires=['PyQt5', 'watchdog'],
