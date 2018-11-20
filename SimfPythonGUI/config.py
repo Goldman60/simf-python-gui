@@ -129,7 +129,7 @@ class ConfigEditor(QDialog):
         self.sudoPath.setText(Config.sudo_path)
         self.shellPath.setText(Config.bash_path)
 
-        self.capInterval.setValue(Config.dbg_capture_count)
+        self.capInterval.setValue(Config.dbg_interval)
         self.ffcInterval.setValue(Config.dbg_ffc_interval)
         self.captureCount.setValue(Config.dbg_capture_count)
         self.leptonSet.setValue(Config.dbg_lepton_set)
@@ -148,7 +148,7 @@ class ConfigEditor(QDialog):
         Config.sudo_path = self.sudoPath.text()
         Config.bash_path = self.shellPath.text()
 
-        Config.dbg_ffc_interval = self.capInterval.value()
+        Config.dbg_ffc_interval = self.ffcInterval.value()
         Config.dbg_interval = self.capInterval.value()
         Config.dbg_capture_count = self.captureCount.value()
         Config.dbg_lepton_set = self.leptonSet.value()

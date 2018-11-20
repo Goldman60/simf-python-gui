@@ -166,7 +166,7 @@ class MainWindow(QMainWindow):
                                     + str(Config.dbg_capture_count) +
                                     " --dbg_serial_csv "
                                     + str(int(Config.dbg_serial_csv)) +
-                                    "--dbg_lepton_set"
+                                    " --dbg_lepton_set "
                                     + str(Config.dbg_lepton_set) + "\n")
                                    .encode('utf-8'))
 
