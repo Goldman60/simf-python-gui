@@ -25,12 +25,12 @@
      <item>
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Bash (or compatible shell) path</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="shellPath"/>
      </item>
     </layout>
    </item>
@@ -39,12 +39,12 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Lepton-Graber Working Directory</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_4"/>
+      <widget class="QLineEdit" name="leptonWorkingDir"/>
      </item>
     </layout>
    </item>
@@ -53,12 +53,12 @@
      <item>
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Sudo path</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="sudoPath"/>
      </item>
     </layout>
    </item>
@@ -67,24 +67,14 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Python Path</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_3"/>
+      <widget class="QLineEdit" name="pythonPath"/>
      </item>
     </layout>
-   </item>
-   <item row="13" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel</set>
-     </property>
-    </widget>
    </item>
    <item row="6" column="0">
     <widget class="QLabel" name="label_7">
@@ -98,28 +88,35 @@
      <item>
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>TextLabel</string>
+        <string>dbg_ffc_interval</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBox_2"/>
+      <widget class="QSpinBox" name="ffcInterval">
+       <property name="minimum">
+        <number>-9999</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
-   <item row="12" column="0">
+   <item row="13" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_11">
      <item>
       <widget class="QLabel" name="label_11">
        <property name="text">
-        <string>TextLabel</string>
+        <string>dbg_serial_csv (Generate CSV)</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioButton_4">
+      <widget class="QRadioButton" name="csvEnable">
        <property name="text">
-        <string>RadioButton</string>
+        <string>Enab&amp;le</string>
        </property>
        <attribute name="buttonGroup">
         <string notr="true">dbgcsvgroup</string>
@@ -127,9 +124,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioButton_2">
+      <widget class="QRadioButton" name="csvDisable">
        <property name="text">
-        <string>RadioBu&amp;tton</string>
+        <string>&amp;Disable</string>
        </property>
        <attribute name="buttonGroup">
         <string notr="true">dbgcsvgroup</string>
@@ -143,12 +140,19 @@
      <item>
       <widget class="QLabel" name="label_10">
        <property name="text">
-        <string>TextLabel</string>
+        <string>dbg_capture_count (Number of images to capture)</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBox"/>
+      <widget class="QSpinBox" name="captureCount">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -157,28 +161,38 @@
      <item>
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>TextLabel</string>
+        <string>dbg_interval (capture interval in seconds)</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBox_3"/>
+      <widget class="QSpinBox" name="capInterval">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+       <property name="singleStep">
+        <number>1</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
-   <item row="11" column="0">
+   <item row="12" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_9">
      <item>
       <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>TextLabel</string>
+        <string>dbg_png (Generate pngs)</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioButton_3">
+      <widget class="QRadioButton" name="pngEnable">
        <property name="text">
-        <string>RadioB&amp;utton</string>
+        <string>E&amp;nable</string>
        </property>
        <attribute name="buttonGroup">
         <string notr="true">dbgpnggroup</string>
@@ -186,9 +200,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioButton">
+      <widget class="QRadioButton" name="pngDisable">
        <property name="text">
-        <string>RadioB&amp;utton</string>
+        <string>Disable</string>
        </property>
        <attribute name="buttonGroup">
         <string notr="true">dbgpnggroup</string>
@@ -223,6 +237,37 @@
       <string>Path Settings:</string>
      </property>
     </widget>
+   </item>
+   <item row="14" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::RestoreDefaults|QDialogButtonBox::Save</set>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_13">
+       <property name="text">
+        <string>dbg_lepton_set (Number of leptons)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="leptonSet">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -262,7 +307,7 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="dbgpnggroup"/>
   <buttongroup name="dbgcsvgroup"/>
+  <buttongroup name="dbgpnggroup"/>
  </buttongroups>
 </ui>

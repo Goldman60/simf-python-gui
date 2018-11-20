@@ -150,7 +150,6 @@ class MainWindow(QMainWindow):
         # Note this is a kinda hacky way to get the script to execute
         # with sudo permissions, likely a better way to do this at the system
         # level
-        # TODO: Could expand configurability
         self.simfProcess.start(Config.bash_path)
         self.simfProcess.writeData(("printf -v pw \"%q\\n\" \""
                                     + password + "\"\n").encode('utf-8'))
@@ -166,7 +165,9 @@ class MainWindow(QMainWindow):
                                     " --dbg_capture_count "
                                     + str(Config.dbg_capture_count) +
                                     " --dbg_serial_csv "
-                                    + str(int(Config.dbg_serial_csv)) + "\n")
+                                    + str(int(Config.dbg_serial_csv)) +
+                                    "--dbg_lepton_set"
+                                    + str(Config.dbg_lepton_set) + "\n")
                                    .encode('utf-8'))
 
         self.simfProcess.writeData("exit\n".encode('utf-8'))

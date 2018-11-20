@@ -2,7 +2,7 @@ import os
 from configparser import SafeConfigParser
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox
 
 
 class Config:
@@ -19,41 +19,59 @@ class Config:
     """
 
     # paths
-    lepton_grabber_working_dir = "lepton-grabber"
-    python_path = "/usr/bin/python3"
-    sudo_path = "sudo"
+    lepton_grabber_working_dir = str()
+    python_path = str()
+    sudo_path = str()
     # Note that bash can be replaced by other compatible shells
     # All I use is echo, quit, printf, and the piping command "|"
-    bash_path = "bash"
+    bash_path = str()
 
     # lepton-grabber launch options
-    dbg_interval = 10
-    dbg_png = True
-    dbg_ffc_interval = -180
-    dbg_capture_count = 720
-    dbg_serial_csv = True
+    dbg_interval = int()
+    dbg_png = bool()
+    dbg_ffc_interval = int()
+    dbg_capture_count = int()
+    dbg_serial_csv = bool()
+    dbg_lepton_set = int()
 
-    def read_config(self, parser):
-        parser.read(self.config_name)
+    @staticmethod
+    def defaults():
+        Config.lepton_grabber_working_dir = "lepton-grabber"
+        Config.python_path = "/usr/bin/python3"
+        Config.sudo_path = "sudo"
+        Config.bash_path = "bash"
+
+        Config.dbg_interval = 10
+        Config.dbg_png = True
+        Config.dbg_ffc_interval = -180
+        Config.dbg_capture_count = 720
+        Config.dbg_serial_csv = True
+        Config.dbg_lepton_set = 7
+
+    @staticmethod
+    def read_config(parser):
+        parser.read(Config.config_name)
 
         # Get Paths
-        self.lepton_grabber_working_dir = parser.get(
+        Config.lepton_grabber_working_dir = parser.get(
             'Paths', 'lepton_grabber_working_dir')
-        self.python_path = parser.get('Paths', 'python_path')
-        self.sudo_path = parser.get('Paths', 'sudo_path')
-        self.bash_path = parser.get('Paths', 'bash_path')
+        Config.python_path = parser.get('Paths', 'python_path')
+        Config.sudo_path = parser.get('Paths', 'sudo_path')
+        Config.bash_path = parser.get('Paths', 'bash_path')
 
         # Get lepton config
-        self.dbg_interval = parser.getint('LeptonGrabberLaunchOptions',
-                                          'dbg_interval')
-        self.dbg_png = parser.getboolean('LeptonGrabberLaunchOptions',
-                                         'dbg_png')
-        self.dbg_ffc_interval = parser.getint('LeptonGrabberLaunchOptions',
-                                              'dbg_ffc_interval')
-        self.dbg_capture_count = parser.getint('LeptonGrabberLaunchOptions',
-                                               'dbg_capture_count')
-        self.dbg_serial_csv = parser.getboolean('LeptonGrabberLaunchOptions',
-                                                'dbg_serial_csv')
+        Config.dbg_interval = parser.getint('LeptonGrabberLaunchOptions',
+                                            'dbg_interval')
+        Config.dbg_png = parser.getboolean('LeptonGrabberLaunchOptions',
+                                           'dbg_png')
+        Config.dbg_ffc_interval = parser.getint('LeptonGrabberLaunchOptions',
+                                                'dbg_ffc_interval')
+        Config.dbg_capture_count = parser.getint('LeptonGrabberLaunchOptions',
+                                                 'dbg_capture_count')
+        Config.dbg_serial_csv = parser.getboolean('LeptonGrabberLaunchOptions',
+                                                  'dbg_serial_csv')
+        Config.dbg_lepton_set = parser.getint('LeptonGrabberLaunchOptions',
+                                              'dbg_lepton_set')
 
     @staticmethod
     def write_config(parser):
@@ -75,6 +93,8 @@ class Config:
                    str(Config.dbg_capture_count))
         parser.set('LeptonGrabberLaunchOptions', 'dbg_serial_csv',
                    str(Config.dbg_serial_csv))
+        parser.set('LeptonGrabberLaunchOptions', 'dbg_lepton_set',
+                   str(Config.dbg_lepton_set))
 
         with open(Config.config_name, 'w') as file:
             parser.write(file)
@@ -82,10 +102,11 @@ class Config:
     def __init__(self):
         parser = SafeConfigParser(allow_no_value=True)
 
-        if os.path.isfile(self.config_name):
+        if os.path.isfile(Config.config_name):
             self.read_config(parser)
         else:
             # Generate new config
+            self.defaults()
             self.write_config(parser)
 
 
@@ -94,3 +115,52 @@ class ConfigEditor(QDialog):
         super().__init__(flags=Qt.WindowStaysOnTopHint)
         uic.loadUi('SettingsDialog.ui', self)
         self.show()
+
+        self.update_configs()
+
+        # Init handlers
+        self.buttonBox.accepted.connect(self.apply_settings)
+        self.buttonBox.button(QDialogButtonBox.RestoreDefaults).clicked\
+            .connect(self.apply_defaults)
+
+    def update_configs(self):
+        self.leptonWorkingDir.setText(Config.lepton_grabber_working_dir)
+        self.pythonPath.setText(Config.python_path)
+        self.sudoPath.setText(Config.sudo_path)
+        self.shellPath.setText(Config.bash_path)
+
+        self.capInterval.setValue(Config.dbg_capture_count)
+        self.ffcInterval.setValue(Config.dbg_ffc_interval)
+        self.captureCount.setValue(Config.dbg_capture_count)
+        self.leptonSet.setValue(Config.dbg_lepton_set)
+
+        self.pngEnable.setChecked(Config.dbg_png)
+        self.pngDisable.setChecked(not Config.dbg_png)
+        self.csvEnable.setChecked(Config.dbg_serial_csv)
+        self.csvDisable.setChecked(not Config.dbg_serial_csv)
+
+    def apply_settings(self):
+        parser = SafeConfigParser(allow_no_value=True)
+
+        # Set the settings
+        Config.lepton_grabber_working_dir = self.leptonWorkingDir.text()
+        Config.python_path = self.pythonPath.text()
+        Config.sudo_path = self.sudoPath.text()
+        Config.bash_path = self.shellPath.text()
+
+        Config.dbg_ffc_interval = self.capInterval.value()
+        Config.dbg_interval = self.capInterval.value()
+        Config.dbg_capture_count = self.captureCount.value()
+        Config.dbg_lepton_set = self.leptonSet.value()
+
+        Config.dbg_png = self.pngEnable.isChecked()
+        Config.dbg_serial_csv = self.csvEnable.isChecked()
+
+        Config.write_config(parser)
+
+    def apply_defaults(self):
+        parser = SafeConfigParser(allow_no_value=True)
+
+        Config.defaults()
+        self.update_configs()
+        Config.write_config(parser)
