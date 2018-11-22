@@ -86,6 +86,7 @@ class MainWindow(QMainWindow):
         self.imgW.setEnabled(status)
         self.imgNW.setEnabled(status)
         self.imgCenter.setEnabled(status)
+        self.actionSettings.setDisabled(status)  # TODO: Test me
 
     # Triggered when the QProcess that runs the lepton-grabber runs
     def process_started(self):
@@ -167,7 +168,19 @@ class MainWindow(QMainWindow):
                                     " --dbg_serial_csv "
                                     + str(int(Config.dbg_serial_csv)) +
                                     " --dbg_lepton_set "
-                                    + str(Config.dbg_lepton_set) + "\n")
+                                    + str(Config.dbg_lepton_set)
+                                    + (" --dbg_testmode1"
+                                       if Config.dbg_testmode1
+                                       else "")
+                                    + (" --dbg_print" if Config.dbg_print
+                                       else "")
+                                    + (" --dbg_ser_noavg"
+                                       if Config.dbg_ser_noavg
+                                       else "")
+                                    + (" --dbg_no_serial"
+                                       if Config.dbg_no_serial
+                                       else "")
+                                    + "\n")
                                    .encode('utf-8'))
 
         self.simfProcess.writeData("exit\n".encode('utf-8'))

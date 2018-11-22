@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>698</width>
-    <height>564</height>
+    <width>981</width>
+    <height>672</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -213,6 +213,12 @@
    </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="font">
       <font>
        <pointsize>15</pointsize>
@@ -238,7 +244,7 @@
      </property>
     </widget>
    </item>
-   <item row="14" column="0">
+   <item row="18" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -265,6 +271,130 @@
        <property name="maximum">
         <number>9999</number>
        </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="16" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_13">
+     <item>
+      <widget class="QLabel" name="label_16">
+       <property name="text">
+        <string>dbg_ser_noavg (Disable averaging of serial data)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="avgDisable">
+       <property name="text">
+        <string>Averaging Enabled</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">dbgsernoavggroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="avgEnable">
+       <property name="text">
+        <string>Averaging Disabled</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">dbgsernoavggroup</string>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="15" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_12">
+     <item>
+      <widget class="QLabel" name="label_15">
+       <property name="text">
+        <string>dbg_print (Enable debug prints)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="printEnable">
+       <property name="text">
+        <string>Enable</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">dbgprintgroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="printDisable">
+       <property name="text">
+        <string>Disable</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">dbgprintgroup</string>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="14" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QLabel" name="label_14">
+       <property name="text">
+        <string>dbg_testmode1 (Disable FFC on 1st lepton)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="testmodeDisable">
+       <property name="text">
+        <string>Enable FFC</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">dbgtestmodegroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="testmodeEnable">
+       <property name="text">
+        <string>Disable FFC</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">dbgtestmodegroup</string>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="17" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_14">
+     <item>
+      <widget class="QLabel" name="label_17">
+       <property name="text">
+        <string>dbg_no_serial (Disable serial support)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="serialDisable">
+       <property name="text">
+        <string>Serial Enabled</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">dbgnoserialgroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="serialEnable">
+       <property name="text">
+        <string>Serial Disabled</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">dbgnoserialgroup</string>
+       </attribute>
       </widget>
      </item>
     </layout>
@@ -309,5 +439,9 @@
  <buttongroups>
   <buttongroup name="dbgcsvgroup"/>
   <buttongroup name="dbgpnggroup"/>
+  <buttongroup name="dbgtestmodegroup"/>
+  <buttongroup name="dbgprintgroup"/>
+  <buttongroup name="dbgsernoavggroup"/>
+  <buttongroup name="dbgnoserialgroup"/>
  </buttongroups>
 </ui>

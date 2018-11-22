@@ -51,6 +51,10 @@ class Config:
         Config.dbg_capture_count = 720
         Config.dbg_serial_csv = True
         Config.dbg_lepton_set = 7
+
+        # Note that this block of config values is named for whether the
+        # flag they correspond to is on or not, so it logically could seem
+        # backwards
         Config.dbg_testmode1 = False
         Config.dbg_print = False
         Config.dbg_ser_noavg = False
@@ -163,6 +167,15 @@ class ConfigEditor(QDialog):
         self.csvEnable.setChecked(Config.dbg_serial_csv)
         self.csvDisable.setChecked(not Config.dbg_serial_csv)
 
+        self.testmodeEnable.setChecked(Config.dbg_testmode1)
+        self.testmodeDisable.setChecked(not Config.dbg_testmode1)
+        self.printEnable.setChecked(Config.dbg_print)
+        self.printDisable.setChecked(not Config.dbg_print)
+        self.avgEnable.setChecked(Config.dbg_ser_noavg)
+        self.avgDisable.setChecked(not Config.dbg_ser_noavg)
+        self.serialEnable.setChecked(Config.dbg_no_serial)
+        self.serialDisable.setChecked(not Config.dbg_no_serial)
+
     def apply_settings(self):
         parser = SafeConfigParser(allow_no_value=True)
 
@@ -179,6 +192,10 @@ class ConfigEditor(QDialog):
 
         Config.dbg_png = self.pngEnable.isChecked()
         Config.dbg_serial_csv = self.csvEnable.isChecked()
+        Config.dbg_testmode1 = self.testmodeEnable.isChecked()
+        Config.dbg_print = self.printEnable.isChecked()
+        Config.dbg_ser_noavg = self.avgEnable.isChecked()
+        Config.dbg_no_serial = self.serialEnable.isChecked()
 
         Config.write_config(parser)
 
