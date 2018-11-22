@@ -33,6 +33,10 @@ class Config:
     dbg_capture_count = int()
     dbg_serial_csv = bool()
     dbg_lepton_set = int()
+    dbg_testmode1 = bool()
+    dbg_print = bool()
+    dbg_ser_noavg = bool()
+    dbg_no_serial = bool()
 
     @staticmethod
     def defaults():
@@ -47,6 +51,10 @@ class Config:
         Config.dbg_capture_count = 720
         Config.dbg_serial_csv = True
         Config.dbg_lepton_set = 7
+        Config.dbg_testmode1 = False
+        Config.dbg_print = False
+        Config.dbg_ser_noavg = False
+        Config.dbg_no_serial = False
 
     @staticmethod
     def read_config(parser):
@@ -72,6 +80,14 @@ class Config:
                                                   'dbg_serial_csv')
         Config.dbg_lepton_set = parser.getint('LeptonGrabberLaunchOptions',
                                               'dbg_lepton_set')
+        Config.dbg_testmode1 = parser.getboolean('LeptonGrabberLaunchOptions',
+                                                  'dbg_testmode1')
+        Config.dbg_print = parser.getboolean('LeptonGrabberLaunchOptions',
+                                                  'dbg_print')
+        Config.dbg_ser_noavg = parser.getboolean('LeptonGrabberLaunchOptions',
+                                                  'dbg_ser_noavg')
+        Config.dbg_no_serial = parser.getboolean('LeptonGrabberLaunchOptions',
+                                                  'dbg_no_serial')
 
     @staticmethod
     def write_config(parser):
@@ -95,6 +111,14 @@ class Config:
                    str(Config.dbg_serial_csv))
         parser.set('LeptonGrabberLaunchOptions', 'dbg_lepton_set',
                    str(Config.dbg_lepton_set))
+        parser.set('LeptonGrabberLaunchOptions', 'dbg_testmode1',
+                   str(Config.dbg_testmode1))
+        parser.set('LeptonGrabberLaunchOptions', 'dbg_print',
+                   str(Config.dbg_print))
+        parser.set('LeptonGrabberLaunchOptions', 'dbg_ser_noavg',
+                   str(Config.dbg_ser_noavg))
+        parser.set('LeptonGrabberLaunchOptions', 'dbg_no_serial',
+                   str(Config.dbg_no_serial))
 
         with open(Config.config_name, 'w') as file:
             parser.write(file)
