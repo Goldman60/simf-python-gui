@@ -32,3 +32,15 @@ class ImageHandler(PatternMatchingEventHandler):
     def on_created(self, event):
         # TODO: Update image views
         print("Update image")
+
+
+class CSVHandler(PatternMatchingEventHandler):
+    patterns = ["*.csv"]
+    main = None
+
+    def __init__(self, mainwindow):
+        self.main = mainwindow
+
+    def on_created(self, event):
+        # TODO: Update irradiance count
+        print("New CSV")
