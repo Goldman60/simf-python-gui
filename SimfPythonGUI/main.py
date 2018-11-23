@@ -6,9 +6,10 @@ from PyQt5 import uic
 from PyQt5.QtCore import QProcess, QProcessEnvironment, Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from watchdog.observers import Observer
-import SimfPythonGUI.filehandlers as filehandlers, SimfPythonGUI.sudo as sudo
-from SimfPythonGUI.about import AboutDialog
-from SimfPythonGUI.config import Config, ConfigEditor
+import filehandlers
+import sudo
+from about import AboutDialog
+from config import Config, ConfigEditor
 
 
 class MainWindow(QMainWindow):
@@ -154,8 +155,9 @@ class MainWindow(QMainWindow):
         self.simfProcess.start(Config.bash_path)
         self.simfProcess.writeData(("printf -v pw \"%q\\n\" \""
                                     + password + "\"\n").encode('utf-8'))
-        self.simfProcess.writeData(("echo $pw | " + Config.sudo_path + " -S "
-                                    + Config.python_path +
+        self.simfProcess.writeData(("echo $pw | " + "\"" + Config.sudo_path +
+                                    "\" -S "
+                                    + "\"" + Config.python_path + "\"" +
                                     " frame_grabber.py"
                                     " --dbg_interval "
                                     + str(Config.dbg_interval) + ""
