@@ -9,6 +9,7 @@ class AboutDialog(QDialog):
         super().__init__(flags=Qt.WindowStaysOnTopHint)
         version_file = open(os.path.join('.', 'VERSION'))
         version = version_file.read().strip()
-        uic.loadUi('AboutDialog.ui', self)
+        ui_file = os.path.join('.', 'AboutDialog.ui')
+        uic.loadUi(ui_file, self)
         self.show()
         self.versionLabel.setText("Version: " + version)

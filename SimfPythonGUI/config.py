@@ -141,7 +141,8 @@ class Config:
 class ConfigEditor(QDialog):
     def __init__(self):
         super().__init__(flags=Qt.WindowStaysOnTopHint)
-        uic.loadUi('SettingsDialog.ui', self)
+        ui_file = os.path.join('.', 'SettingsDialog.ui')
+        uic.loadUi(ui_file, self)
         self.show()
 
         self.update_configs()
