@@ -1,5 +1,7 @@
 import os
 from configparser import SafeConfigParser
+from pathlib import Path
+import pkg_resources
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox
@@ -7,7 +9,8 @@ from PyQt5.QtWidgets import QDialog, QDialogButtonBox
 
 class Config:
     # TODO: Comment generated config file
-    config_name = 'config.ini'
+    # TODO: Recover gracefully from faulty config
+    config_name = str(Path.home()) + '/.simfgui.ini'
 
     """  READ ME BEFORE EDITING BELOW
     These are the **default** values, if you want to change
@@ -141,7 +144,7 @@ class Config:
 class ConfigEditor(QDialog):
     def __init__(self):
         super().__init__(flags=Qt.WindowStaysOnTopHint)
-        ui_file = os.path.join('.', 'SettingsDialog.ui')
+        ui_file = pkg_resources.resource_filename(__name__, "SettingsDialog.ui")
         uic.loadUi(ui_file, self)
         self.show()
 

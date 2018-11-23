@@ -3,7 +3,7 @@ import os
 import sys
 import webbrowser
 from PyQt5 import uic
-from pkg_resources import resource_filename
+import pkg_resources
 from PyQt5.QtCore import QProcess, QProcessEnvironment, Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from watchdog.observers import Observer
@@ -19,7 +19,8 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__(flags=Qt.Window)
-        ui_file = os.path.join('.', 'MainWindow.ui')
+
+        ui_file = pkg_resources.resource_filename(__name__, "MainWindow.ui")
         uic.loadUi(ui_file, self)
 
         self.passprompt = None
