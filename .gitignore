@@ -184,3 +184,6 @@ dmypy.json
 
 # this is generated on first run
 SimfPythonGUI/config.ini
+
+# KDE Dolphin files
+.directory
