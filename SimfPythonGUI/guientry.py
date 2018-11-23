@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-import SimfPythonGUI
+from SimfPythonGUI import main as m
 
 
 def main():
-    SimfPythonGUI.main.main()
+    m.main()
 
 
 if __name__ == '__main__':
