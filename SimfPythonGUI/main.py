@@ -6,10 +6,10 @@ from PyQt5 import uic
 from PyQt5.QtCore import QProcess, QProcessEnvironment, Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from watchdog.observers import Observer
-import filehandlers
-import sudo
-from about import AboutDialog
-from config import Config, ConfigEditor
+from .filehandlers import FileHandlerUtils, ImageHandler
+from .sudo import PasswordWindow
+from .about import AboutDialog
+from .config import Config, ConfigEditor
 
 
 class MainWindow(QMainWindow):
@@ -98,14 +98,14 @@ class MainWindow(QMainWindow):
         if not self.observer.is_alive():
             self.observer.start()
 
-        datadir = filehandlers.FileHandlerUtils.compute_current_data_dir()
+        datadir = FileHandlerUtils.compute_current_data_dir()
 
         if not os.path.exists(datadir):
             # Wait for lepton-grabber to make the directory rather than failing
             # here or waiting for the data directory to be created just create
             # it ourselves
             os.mkdir(datadir)
-        self.observer.schedule(filehandlers.ImageHandler(self), path=datadir)
+        self.observer.schedule(ImageHandler(self), path=datadir)
 
     # Triggered when the QProcess that runs the lepton-grabber dies for any
     # reason
@@ -139,7 +139,7 @@ class MainWindow(QMainWindow):
     # Fired by the OK button on the sudo dialog
     def start_capture(self):
         # Retrieves the password via a QDialog
-        self.passprompt = sudo.PasswordWindow()
+        self.passprompt = PasswordWindow()
         self.passprompt.exec_()  # Wait for the password dialog to finish
         if self.passprompt.rejectstat:  # Cancel was pressed
             return
