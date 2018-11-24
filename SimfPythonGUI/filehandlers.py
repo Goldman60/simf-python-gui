@@ -71,6 +71,9 @@ class ImageHandler(PatternMatchingEventHandler):
         self.current = (self.current + 1) % Config.dbg_lepton_set
 
 
+# TODO: This needs to be thread safe
+#       Good example:
+#       https://github.com/yesworkflow-org/yw-gui/blob/master/main_ui.py
 class CSVHandler(PatternMatchingEventHandler):
     patterns = ["*.csv"]
     main = None
@@ -80,5 +83,6 @@ class CSVHandler(PatternMatchingEventHandler):
         self.main = mainwindow
 
     def on_created(self, event):
+        # TODO: use this to determine percentage complete
         # TODO: Update irradiance count
         print("New CSV")
