@@ -1,5 +1,5 @@
 import os
-from configparser import SafeConfigParser
+from configparser import ConfigParser
 from pathlib import Path
 import pkg_resources
 from PyQt5 import uic
@@ -131,7 +131,7 @@ class Config:
             parser.write(file)
 
     def __init__(self):
-        parser = SafeConfigParser(allow_no_value=True)
+        parser = ConfigParser(allow_no_value=True)
 
         if os.path.isfile(Config.config_name):
             self.read_config(parser)
@@ -144,7 +144,8 @@ class Config:
 class ConfigEditor(QDialog):
     def __init__(self):
         super().__init__(flags=Qt.WindowStaysOnTopHint)
-        ui_file = pkg_resources.resource_filename(__name__, "SettingsDialog.ui")
+        ui_file = pkg_resources.resource_filename(__name__,
+                                                  "SettingsDialog.ui")
         uic.loadUi(ui_file, self)
         self.show()
 
@@ -181,7 +182,7 @@ class ConfigEditor(QDialog):
         self.serialDisable.setChecked(not Config.dbg_no_serial)
 
     def apply_settings(self):
-        parser = SafeConfigParser(allow_no_value=True)
+        parser = ConfigParser(allow_no_value=True)
 
         # Set the settings
         Config.lepton_grabber_working_dir = self.leptonWorkingDir.text()
@@ -204,7 +205,7 @@ class ConfigEditor(QDialog):
         Config.write_config(parser)
 
     def apply_defaults(self):
-        parser = SafeConfigParser(allow_no_value=True)
+        parser = ConfigParser(allow_no_value=True)
 
         Config.defaults()
         self.update_configs()

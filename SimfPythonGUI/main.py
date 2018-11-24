@@ -90,7 +90,7 @@ class MainWindow(QMainWindow):
         self.imgW.setEnabled(status)
         self.imgNW.setEnabled(status)
         self.imgCenter.setEnabled(status)
-        self.actionSettings.setDisabled(status)  # TODO: Test me
+        self.actionSettings.setDisabled(status)
 
     # Triggered when the QProcess that runs the lepton-grabber runs
     def process_started(self):
@@ -188,7 +188,7 @@ class MainWindow(QMainWindow):
                                     + "\n")
                                    .encode('utf-8'))
 
-        self.simfProcess.writeData("exit\n".encode('utf-8'))
+        # self.simfProcess.writeData("exit\n".encode('utf-8'))
 
     # Fired when the stop capture button is hit
     def stop_capture(self):
