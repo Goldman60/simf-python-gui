@@ -51,6 +51,9 @@ class MainWindow(QMainWindow):
         # Ready to show the UI!
         self.show()
 
+        self.cameraCount.display("OFF")
+        self.solarIrradiance.display("OFF")
+
     # Opens a link
     @staticmethod
     def open_link(link):
@@ -92,9 +95,16 @@ class MainWindow(QMainWindow):
         self.imgCenter.setEnabled(status)
         self.actionSettings.setDisabled(status)
 
+        if status:
+            self.cameraCount.display(Config.dbg_lepton_set)
+            self.statusLabel.setText("Status: Capturing")
+        else:
+            self.cameraCount.display("OFF")
+            self.solarIrradiance.display("OFF")
+            self.statusLabel.setText("Status: Stopped")
+
     # Triggered when the QProcess that runs the lepton-grabber runs
     def process_started(self):
-        self.statusLabel.setText("Status: Capturing")
         self.button_toggle(True)
 
         # Start the file observers
@@ -113,7 +123,6 @@ class MainWindow(QMainWindow):
     # Triggered when the QProcess that runs the lepton-grabber dies for any
     # reason
     def process_finished(self):
-        self.statusLabel.setText("Status: Stopped")
         self.button_toggle(False)
 
         self.console_write()
