@@ -1,8 +1,7 @@
 import os
-
 from PyQt5.QtCore import QThread, pyqtSignal
 from watchdog.events import PatternMatchingEventHandler
-from datetime import date
+from datetime import datetime
 from .config import Config
 from watchdog.observers import Observer
 
@@ -11,15 +10,12 @@ from watchdog.observers import Observer
 class FileHandlerUtils:
     @staticmethod
     def compute_current_data_dir():
-        today = date.today()
+        today = datetime.utcnow()
 
         return Config.lepton_grabber_working_dir + "/" \
             + today.strftime("%y-%m-%d")
 
 
-# TODO: This needs to be thread safe
-#       Good example:
-#       https://github.com/yesworkflow-org/yw-gui/blob/master/main_ui.py
 class ImageThread(QThread):
     new_image = pyqtSignal(str)
 
@@ -31,7 +27,6 @@ class ImageThread(QThread):
             self.event_thread = event_thread
 
         def on_created(self, event):
-            print("Update image")
             self.event_thread.new_image.emit(event.src_path)
 
     def run(self):
@@ -44,6 +39,7 @@ class ImageThread(QThread):
             os.mkdir(datadir)
 
         observer = Observer()
+        # FIXME: When this ticks over to the next day it fails to update
         observer.schedule(self.ImageHandler(self), path=datadir)
 
         observer.start()
@@ -51,8 +47,6 @@ class ImageThread(QThread):
 
 
 # TODO: This needs to be thread safe
-#       Good example:
-#       https://github.com/yesworkflow-org/yw-gui/blob/master/main_ui.py
 class CSVHandler(PatternMatchingEventHandler):
     patterns = ["*.csv"]
     main = None
@@ -62,6 +56,4 @@ class CSVHandler(PatternMatchingEventHandler):
         self.main = mainwindow
 
     def on_created(self, event):
-        # TODO: use this to determine percentage complete
-        # TODO: Update irradiance count
         print("New CSV")

@@ -4,7 +4,8 @@ import webbrowser
 from PyQt5 import uic
 import pkg_resources
 from PyQt5.QtCore import QProcess, QProcessEnvironment, Qt
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QMainWindow, QApplication, QGraphicsScene
 from .filehandlers import ImageThread
 from .sudo import PasswordWindow
 from .about import AboutDialog
@@ -54,8 +55,52 @@ class MainWindow(QMainWindow):
         self.cameraCount.display("OFF")
         self.solarIrradiance.display("OFF")
 
+        # Init the scenes for the graphics displays
+        self.sceneN = QGraphicsScene()
+        self.imgN.setScene(self.sceneN)
+        self.sceneNE = QGraphicsScene()
+        self.imgNE.setScene(self.sceneNE)
+        self.sceneE = QGraphicsScene()
+        self.imgE.setScene(self.sceneE)
+        self.sceneSE = QGraphicsScene()
+        self.imgSE.setScene(self.sceneSE)
+        self.sceneS = QGraphicsScene()
+        self.imgS.setScene(self.sceneS)
+        self.sceneSW = QGraphicsScene()
+        self.imgSW.setScene(self.sceneSW)
+        self.sceneW = QGraphicsScene()
+        self.imgW.setScene(self.sceneW)
+        self.sceneNW = QGraphicsScene()
+        self.imgNW.setScene(self.sceneNW)
+        self.sceneCenter = QGraphicsScene()
+        self.imgCenter.setScene(self.sceneCenter)
+        self.current = 0
+
+    # Updates the image and determines the capture progress
     def update_image(self, path):
-        print("New Image! " + path)
+        pix = QPixmap(path)
+
+        if self.current == 0:
+            self.sceneNW.addPixmap(pix)
+        elif self.current == 1:
+            self.sceneN.addPixmap(pix)
+        elif self.current == 2:
+            self.sceneNE.addPixmap(pix)
+        elif self.current == 3:
+            self.sceneW.addPixmap(pix)
+        elif self.current == 4:
+            self.sceneCenter.addPixmap(pix)
+        elif self.current == 5:
+            self.sceneE.addPixmap(pix)
+        elif self.current == 6:
+            self.sceneSW.addPixmap(pix)
+        elif self.current == 7:
+            self.sceneS.addPixmap(pix)
+        elif self.current == 8:
+            self.sceneSE.addPixmap(pix)
+
+        # TODO: Capture progress
+        self.current = (self.current + 1) % Config.dbg_lepton_set
 
     # Opens a link
     @staticmethod
@@ -109,6 +154,7 @@ class MainWindow(QMainWindow):
     # Triggered when the QProcess that runs the lepton-grabber runs
     def process_started(self):
         self.button_toggle(True)
+        self.current = 0
         self.png_watcher.start()
 
     # Triggered when the QProcess that runs the lepton-grabber dies for any
