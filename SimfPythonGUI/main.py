@@ -1,13 +1,11 @@
 #!/usr/bin/env python
-import os
 import sys
 import webbrowser
 from PyQt5 import uic
 import pkg_resources
 from PyQt5.QtCore import QProcess, QProcessEnvironment, Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication
-from watchdog.observers import Observer
-from .filehandlers import FileHandlerUtils, ImageHandler
+from .filehandlers import ImageThread
 from .sudo import PasswordWindow
 from .about import AboutDialog
 from .config import Config, ConfigEditor
@@ -15,7 +13,6 @@ from .config import Config, ConfigEditor
 
 class MainWindow(QMainWindow):
     simfProcess = QProcess()
-    observer = Observer()
 
     def __init__(self):
         super().__init__(flags=Qt.Window)
@@ -26,6 +23,9 @@ class MainWindow(QMainWindow):
         self.passprompt = None
         self.configdialog = None
         self.aboutdialog = None
+
+        self.png_watcher = ImageThread()
+        self.png_watcher.new_image.connect(self.update_image)
 
         # Register Events
         self.startCapButton.clicked.connect(self.start_capture)
@@ -53,6 +53,9 @@ class MainWindow(QMainWindow):
 
         self.cameraCount.display("OFF")
         self.solarIrradiance.display("OFF")
+
+    def update_image(self, path):
+        print("New Image! " + path)
 
     # Opens a link
     @staticmethod
@@ -106,19 +109,7 @@ class MainWindow(QMainWindow):
     # Triggered when the QProcess that runs the lepton-grabber runs
     def process_started(self):
         self.button_toggle(True)
-
-        # Start the file observers
-        if not self.observer.is_alive():
-            self.observer.start()
-
-        datadir = FileHandlerUtils.compute_current_data_dir()
-
-        if not os.path.exists(datadir):
-            # Wait for lepton-grabber to make the directory rather than failing
-            # here or waiting for the data directory to be created just create
-            # it ourselves
-            os.mkdir(datadir)
-        self.observer.schedule(ImageHandler(self), path=datadir)
+        self.png_watcher.start()
 
     # Triggered when the QProcess that runs the lepton-grabber dies for any
     # reason
@@ -128,8 +119,7 @@ class MainWindow(QMainWindow):
         self.console_write()
         self.console_write_line("Capture Ended")
 
-        # Unschedule the file observers while capture isn't running
-        self.observer.unschedule_all()
+        self.png_watcher.terminate()
 
     # Fired when the observer started in process_started
     # detects a new image from the lepton grabbers

@@ -1,8 +1,10 @@
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QGraphicsScene
+import os
+
+from PyQt5.QtCore import QThread, pyqtSignal
 from watchdog.events import PatternMatchingEventHandler
 from datetime import date
 from .config import Config
+from watchdog.observers import Observer
 
 
 # Computes where the lepton grabber is currently dumping output
@@ -18,57 +20,34 @@ class FileHandlerUtils:
 # TODO: This needs to be thread safe
 #       Good example:
 #       https://github.com/yesworkflow-org/yw-gui/blob/master/main_ui.py
-class ImageHandler(PatternMatchingEventHandler):
-    patterns = ["*.png"]
+class ImageThread(QThread):
+    new_image = pyqtSignal(str)
 
-    def __init__(self, mainwindow):
-        super().__init__()
-        self.main = mainwindow
-        self.current = 0
+    class ImageHandler(PatternMatchingEventHandler):
+        patterns = ["*.png"]
 
-        self.sceneN = QGraphicsScene()
-        self.main.imgN.setScene(self.sceneN)
-        self.sceneNE = QGraphicsScene()
-        self.main.imgNE.setScene(self.sceneNE)
-        self.sceneE = QGraphicsScene()
-        self.main.imgE.setScene(self.sceneE)
-        self.sceneSE = QGraphicsScene()
-        self.main.imgSE.setScene(self.sceneSE)
-        self.sceneS = QGraphicsScene()
-        self.main.imgS.setScene(self.sceneS)
-        self.sceneSW = QGraphicsScene()
-        self.main.imgSW.setScene(self.sceneSW)
-        self.sceneW = QGraphicsScene()
-        self.main.imgW.setScene(self.sceneW)
-        self.sceneNW = QGraphicsScene()
-        self.main.imgNW.setScene(self.sceneNW)
-        self.sceneCenter = QGraphicsScene()
-        self.main.imgCenter.setScene(self.sceneCenter)
+        def __init__(self, event_thread):
+            super().__init__()
+            self.event_thread = event_thread
 
-    def on_created(self, event):
-        print("Update image")
-        pix = QPixmap(event.src_path)
+        def on_created(self, event):
+            print("Update image")
+            self.event_thread.new_image.emit(event.src_path)
 
-        if self.current == 0:
-            self.sceneN.addPixmap(pix)
-        elif self.current == 1:
-            self.sceneNE.addPixmap(pix)
-        elif self.current == 2:
-            self.sceneE.addPixmap(pix)
-        elif self.current == 3:
-            self.sceneSE.addPixmap(pix)
-        elif self.current == 4:
-            self.sceneS.addPixmap(pix)
-        elif self.current == 5:
-            self.sceneCenter.addPixmap(pix)
-        elif self.current == 6:
-            self.sceneSW.addPixmap(pix)
-        elif self.current == 7:
-            self.sceneW.addPixmap(pix)
-        elif self.current == 8:
-            self.sceneNW.addPixmap(pix)
+    def run(self):
+        datadir = FileHandlerUtils.compute_current_data_dir()
 
-        self.current = (self.current + 1) % Config.dbg_lepton_set
+        if not os.path.exists(datadir):
+            # Wait for lepton-grabber to make the directory rather than failing
+            # here or waiting for the data directory to be created just create
+            # it ourselves
+            os.mkdir(datadir)
+
+        observer = Observer()
+        observer.schedule(self.ImageHandler(self), path=datadir)
+
+        observer.start()
+        observer.join()
 
 
 # TODO: This needs to be thread safe
