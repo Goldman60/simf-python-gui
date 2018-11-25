@@ -46,14 +46,32 @@ class ImageThread(QThread):
         observer.join()
 
 
-# TODO: This needs to be thread safe
-class CSVHandler(PatternMatchingEventHandler):
-    patterns = ["*.csv"]
-    main = None
+class LicorThread(QThread):
+    new_licor = pyqtSignal(float)
 
-    def __init__(self, mainwindow):
-        super().__init__()
-        self.main = mainwindow
+    class LicorHandler(PatternMatchingEventHandler):
+        patterns = ["*.txt"]
 
-    def on_created(self, event):
-        print("New CSV")
+        def __init__(self, event_thread):
+            super().__init__()
+            self.event_thread = event_thread
+
+        def on_created(self, event):
+            # TODO: Read licor file, convert to float, send to event
+            self.event_thread.new_licor.emit(event.src_path)
+
+    def run(self):
+        datadir = FileHandlerUtils.compute_current_data_dir()
+
+        if not os.path.exists(datadir):
+            # Wait for lepton-grabber to make the directory rather than failing
+            # here or waiting for the data directory to be created just create
+            # it ourselves
+            os.mkdir(datadir)
+
+        observer = Observer()
+        # FIXME: When this ticks over to the next day it fails to update
+        observer.schedule(self.LicorHandler(self), path=datadir)
+
+        observer.start()
+        observer.join()
