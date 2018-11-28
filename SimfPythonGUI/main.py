@@ -233,7 +233,7 @@ class MainWindow(QMainWindow):
                                     + "\n")
                                    .encode('utf-8'))
 
-        # self.simfProcess.writeData("exit\n".encode('utf-8'))
+        self.simfProcess.writeData("exit\n".encode('utf-8'))
 
     # Fired when the stop capture button is hit
     def stop_capture(self):
