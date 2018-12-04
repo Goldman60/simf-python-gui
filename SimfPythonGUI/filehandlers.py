@@ -57,8 +57,9 @@ class LicorThread(QThread):
             self.event_thread = event_thread
 
         def on_created(self, event):
-            # TODO: Read licor file, convert to float, send to event
-            self.event_thread.new_licor.emit(event.src_path)
+            file = open(event.src_path, "r")
+            output = float(file.read())
+            self.event_thread.new_licor.emit(output)
 
     def run(self):
         datadir = FileHandlerUtils.compute_current_data_dir()

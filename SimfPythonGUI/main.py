@@ -6,7 +6,7 @@ import pkg_resources
 from PyQt5.QtCore import QProcess, QProcessEnvironment, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QGraphicsScene
-from .filehandlers import ImageThread
+from .filehandlers import ImageThread, LicorThread
 from .sudo import PasswordWindow
 from .about import AboutDialog
 from .config import Config, ConfigEditor
@@ -27,6 +27,9 @@ class MainWindow(QMainWindow):
 
         self.png_watcher = ImageThread()
         self.png_watcher.new_image.connect(self.update_image)
+
+        self.licor_watcher = LicorThread()
+        self.licor_watcher.new_licor.connect(self.update_licor)
 
         # Register Events
         self.startCapButton.clicked.connect(self.start_capture)
@@ -101,6 +104,9 @@ class MainWindow(QMainWindow):
 
         # TODO: Capture progress
         self.current = (self.current + 1) % Config.dbg_lepton_set
+
+    def update_licor(self, licor):
+        self.solarIrradiance.display(licor)
 
     # Opens a link
     @staticmethod
