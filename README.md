@@ -4,10 +4,28 @@ A QT and Python3 based graphical control panel for the Lepton-Grabber
 
 ## Installation
 
-Checkout the lepton-grabber code and run through its install process then run 
-the setup.py file
+The application can be installed from pypi using pip:
+
+    pip install SimfPythonGUI
+    
+On some systems you may need to specify Python 3's version of pip:
+
+    pip3 install SimfPythonGUI
+    
+Package information can be found on the 
+[pypi package page](https://pypi.org/project/SimfPythonGUI/) for the project.
+
+## Usage
+
+The gui can be launched from the command line assuming your python package
+path is set up properly using the command:
+
+    simfgui
 
 ## Dependencies
+
+Dependencies should be managed automatically when installed with pip, but they
+are provided here for reference.
 
 * Python3
 * PyQT5
@@ -29,4 +47,6 @@ The code is hosted online in two locations and accepting pull requests:
 
 ## Questions, comments, issues?
 
-Please use the contact information on [my website](https://ajfite.com).
+Please use the contact information on [my website](https://ajfite.com).  For
+my most recent contact info, I'm happy to help even though by the time you're 
+reading this I'm long graduated, just shoot me an email.
