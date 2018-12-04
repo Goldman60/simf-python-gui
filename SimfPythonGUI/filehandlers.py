@@ -58,7 +58,8 @@ class LicorThread(QThread):
 
         def on_created(self, event):
             file = open(event.src_path, "r")
-            output = float(file.read())
+            output = float(file.read().strip())
+            file.close()
             self.event_thread.new_licor.emit(output)
 
     def run(self):
