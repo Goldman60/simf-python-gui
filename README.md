@@ -15,6 +15,22 @@ On some systems you may need to specify Python 3's version of pip:
 Package information can be found on the 
 [pypi package page](https://pypi.org/project/SimfPythonGUI/) for the project.
 
+### Dependencies
+
+Dependencies should be managed automatically when installed with pip, but they
+are provided here for reference:
+
+* Python3
+* PyQT5
+* watchdog
+
+The program relies on the following system utilities being installed or
+suitably compatible replacements (configure the replacements using the
+configuration menu):
+
+* bash
+* sudo
+
 ## Usage
 
 The gui can be launched from the command line assuming your python package
@@ -22,14 +38,8 @@ path is set up properly using the command:
 
     simfgui
 
-## Dependencies
-
-Dependencies should be managed automatically when installed with pip, but they
-are provided here for reference.
-
-* Python3
-* PyQT5
-* watchdog
+A configuration file is written by default to `~/.simfgui.ini`.  Running the
+utility will require sudo permissions
 
 ## Contributing and Editing
 
