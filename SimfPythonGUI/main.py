@@ -105,9 +105,6 @@ class MainWindow(QMainWindow):
         # TODO: Capture progress
         self.current = (self.current + 1) % Config.dbg_lepton_set
 
-    def update_licor(self, licor):
-        self.solarIrradiance.display(licor)
-
     # Opens a link
     @staticmethod
     def open_link(link):
@@ -177,6 +174,13 @@ class MainWindow(QMainWindow):
     # detects a new image from the lepton grabbers
     def update_images(self):
         self.console_write_line("New images!\n")
+
+    def update_licor(self, licor):
+        self.solarIrradiance.display(licor)
+        self.current += 1
+
+        self.capProgress.setValue(
+            (self.current / Config.dbg_capture_count) * 100)
 
     # Allows the console to handle \n newlines
     def console_write_line(self, output):
