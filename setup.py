@@ -14,7 +14,8 @@ setuptools.setup(
     version=version,
     author="A.J. Fite, Sara Kipps",
     author_email="me@ajfite.com, skipps@calpoly.edu",
-    description="A GUI controller for the closed source SIMF camera capture utility",
+    description="A GUI controller for the closed source SIMF camera "
+                "capture utility",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://git.nclf.net/SIMF/simf-python-gui",
